@@ -4,7 +4,7 @@ class Counter(object):
     def count(self):
         self.cnt += 1
 
-    def doublecount(self)
+    def doublecount(self):
     ＃2回カウントする
     pass
 
