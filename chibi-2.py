@@ -92,6 +92,7 @@ class Var(Expr):
         if self.name in env:
             return env[self.name]
         raise NameError(self.name)
+
 class Assign(Expr):
     __slots__ = ['name', 'e']
     def __init__(self, name, e):
@@ -110,8 +111,7 @@ class Block(Expr):
         for e in self.exprs:
             e.eval(env)
 
-
-class White(Expr):
+class While(Expr):
         __slots__ = ['cond', 'body']
         def __init__(self, cond, body):
             self.cond = cond
@@ -122,7 +122,7 @@ class White(Expr):
 
 class If(Expr):
     __slots__ = ['cond', 'then', 'else']
-    def __init__(cond, then, else_):
+    def __init__(self, cond, then, else_):
         self.cond = cond
         self.then = then
         self.else_ = else_
@@ -133,6 +133,12 @@ class If(Expr):
         else:
             return self.else_.eval(env)
 
+e = Block(
+    Assign('x', Val(1)),
+    Assign('y', Val(2)),
+    If(Gt(Var('x'), Var('y')), Val('x'), Val('y'))
+)
+assert e.eval({}) == 2
 
 def conv(tree):
     if tree == 'Block':
